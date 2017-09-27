@@ -20,10 +20,10 @@
 -(void) saveImage:(UIImage *)image withFileName:(NSString *)imageName ofType:(NSString *)extension inDirectory:(NSString *)directoryPath and: (CGFloat) quality {
     
     if ( ([[extension lowercaseString] isEqualToString:@"png"]) || ([[extension lowercaseString] isEqualToString:@".png"]) ){
-        [UIImagePNGRepresentation(image) writeToFile:[directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", imageName, @"png"]] options:NSAtomicWrite error:nil];
+        [UIImagePNGRepresentation(image) writeToFile:[directoryPath stringByAppendingPathComponent:imageName] options:NSAtomicWrite error:nil];
     } else if ([[extension lowercaseString] isEqualToString:@".jpg"] || [[extension lowercaseString] isEqualToString:@".jpeg"]
                || [[extension lowercaseString] isEqualToString:@"jpg"] || [[extension lowercaseString] isEqualToString:@"jpeg"]) {
-        [UIImageJPEGRepresentation(image, quality) writeToFile:[directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", imageName, @"jpg"]] options:NSAtomicWrite error:nil];
+        [UIImageJPEGRepresentation(image, quality) writeToFile:[directoryPath stringByAppendingPathComponent:imageName] options:NSAtomicWrite error:nil];
     } else {
         NSLog(@"Image Save Failed\nExtension: (%@) is not recognized, use (PNG/JPG)", extension);
     }
@@ -38,7 +38,7 @@
     NSString *dateString = [dateFormatter stringFromDate:date];
 
     self.latestCommand = command;
-    NSData* imageData = [NSData dataFromBase64String:[command.arguments objectAtIndex:0]];
+    NSData* imageData = [[NSData alloc] initWithBase64EncodedString:[command.arguments objectAtIndex:0] options:0];
     
     UIImage* image = [[[UIImage alloc] initWithData:imageData] autorelease];
 
@@ -50,7 +50,10 @@
     CGFloat quality = 1.0;
     quality = [[command.arguments objectAtIndex:2] floatValue] / 100;
     
-    
+    // Overwrites
+    path = [command.arguments objectAtIndex:3];
+    ImageName = [command.arguments objectAtIndex:4];
+
     [self saveImage:image withFileName:ImageName ofType:extension inDirectory:path and:quality];
     
     NSString *tileDirectory = [[NSBundle mainBundle] resourcePath];
