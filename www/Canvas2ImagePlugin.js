@@ -13,14 +13,11 @@
         // successCallback required
         if (typeof successCallback != "function") {
             console.log("Canvas2ImagePlugin Error: successCallback is not a function");
-        }
-        else if (typeof failureCallback != "function") {
+        } else if (typeof failureCallback != "function") {
             console.log("Canvas2ImagePlugin Error: failureCallback is not a function");
-        }
-        else if ((fileExtension) && ((fileExtension.toLowerCase() != '.jpg') && (fileExtension.toLowerCase() != '.png'))) {
+        } else if ((fileExtension) && ((fileExtension.toLowerCase() != '.jpg') && (fileExtension.toLowerCase() != '.png'))) {
             console.log("Canvas2ImagePlugin Error: fileExtension must be '.jpg' or '.png'");
-        }
-        else {
+        } else {
             var canvas = (typeof canvasId === "string") ? document.getElementById(canvasId) : canvasId;
             var imageData = canvas.toDataURL().replace(/data:image\/png;base64,/,'');
             var extension='.png';

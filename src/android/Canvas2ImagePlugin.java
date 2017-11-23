@@ -42,21 +42,23 @@ public class Canvas2ImagePlugin extends CordovaPlugin {
 			String extension = data.optString(1);
 			String quality = data.optString(2);
 			String picfolder= Environment.DIRECTORY_PICTURES;
-			boolean add2Galery=true;
+			boolean add2Galery=false;
 			if (data.length()>3) picfolder=data.optString(3);
-			if (data.length()>4) add2Galery=Boolean.valueOf(data.optString(4));
+			if (data.length()>4) {
+				picfolder+=data.optString(4);
+			}
 				
 			if (base64.equals("")) // isEmpty() requires API level 9
 				callbackContext.error("Missing base64 string");
 			
 			// Create the bitmap from the base64 string
-			Log.d("Canvas2ImagePlugin", base64);
+			// Log.d("Canvas2ImagePlugin", base64);
+			// Log.d("data.optString(4)", data.optString(4));
 			byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
 			Bitmap bmp = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 			if (bmp == null) {
 				callbackContext.error("The image could not be decoded");
 			} else {
-				
 				// Save the image
 				File imageFile = savePhoto(bmp,extension,quality,picfolder);
 				if (imageFile == null)
@@ -98,6 +100,7 @@ public class Canvas2ImagePlugin extends CordovaPlugin {
 
 			String deviceVersion = Build.VERSION.RELEASE;
 			Log.i("Canvas2ImagePlugin", "Android version " + deviceVersion);
+			// Log.i("picfolder", picfolder);
 			int check = deviceVersion.compareTo("2.3.3");
 
 			File folder;
@@ -106,6 +109,7 @@ public class Canvas2ImagePlugin extends CordovaPlugin {
 			 * Environment.DIRECTORY_PICTURES ); //this throws error in Android
 			 * 2.2
 			 */
+			/* commented by Arijit
 			if (check >= 1) {
 				if (picfolder == Environment.DIRECTORY_PICTURES){
 					folder = Environment
@@ -121,8 +125,26 @@ public class Canvas2ImagePlugin extends CordovaPlugin {
 			} else {
 				folder = Environment.getExternalStorageDirectory();
 			}
-			
-			File imageFile = new File(folder, "c2i_" + date.toString() + extension);
+			*/
+
+			String[] arr = picfolder.split("/");
+
+			picfolder = "";
+			for( int i=0; i<arr.length-1; i++) {
+				picfolder += (i!=0?"/":"")+arr[i];
+			}
+
+			folder = new File(picfolder);
+			if(!folder.exists()) {
+				folder.mkdirs();
+			}
+
+			// Log.i("picfolder", picfolder);
+			// Log.i("arr[arr.length-1]", arr[arr.length-1]);
+			Log.i("Canvas2ImagePlugin", "Android version " + deviceVersion);
+			File imageFile = new File(folder, arr[arr.length-1]);
+
+			// File imageFile = new File(folder, date.toString() + extension);
 			CompressFormat compressFormat=(extension.equals(".jpg")) ? Bitmap.CompressFormat.JPEG :Bitmap.CompressFormat.PNG;
 			FileOutputStream out = new FileOutputStream(imageFile);
 			bmp.compress(compressFormat, quality, out);

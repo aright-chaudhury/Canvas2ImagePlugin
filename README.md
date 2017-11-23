@@ -15,8 +15,8 @@ Installation
 
 ### For Cordova 3.0.x:
 
-1. To add this plugin just type: `cordova plugin add https://github.com/shashanktiwary/Canvas2ImagePlugin.git` or `phonegap local plugin add https://github.com/shashanktiwary/Canvas2ImagePlugin.git`
-2. To remove this plugin type: `cordova plugin remove org.shashanktiwary.Canvas2ImagePlugin` or `phonegap local plugin remove org.shashanktiwary.Canvas2ImagePlugin`
+1. To add this plugin just type: `cordova plugin add https://github.com/aright-chaudhury/Canvas2ImagePlugin.git` or `phonegap local plugin add https://github.com/aright-chaudhury/Canvas2ImagePlugin.git`
+2. To remove this plugin type: `cordova plugin remove org.aright-chaudhury.Canvas2ImagePlugin` or `phonegap local plugin remove org.aright-chaudhury.Canvas2ImagePlugin`
 
 ### NOTE: For older versions of Cordova (You will probably have to use tag 0.2.0)
 
